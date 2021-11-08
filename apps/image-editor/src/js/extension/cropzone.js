@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 /**
  * @author NHN. FE Development Team <dl_javascript@nhn.com>
  * @fileoverview Cropzone extending fabric.Rect
