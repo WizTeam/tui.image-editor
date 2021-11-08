@@ -105,9 +105,16 @@ class Draw extends Submenu {
    * set draw mode - action runner
    */
   setDrawMode() {
+    const ext = this.type === 'arrow' && {
+      arrowType: {
+        tail: 'triangle',
+      },
+      //
+    };
     this.actions.setDrawMode(this.type, {
       width: this.width,
       color: getRgb(this.color, DRAW_OPACITY),
+      ...ext,
     });
   }
 
@@ -120,6 +127,7 @@ class Draw extends Submenu {
     this.actions.changeSelectableAll(true);
     this._els.lineSelectButton.classList.remove('free');
     this._els.lineSelectButton.classList.remove('line');
+    this._els.lineSelectButton.classList.remove('arrow');
   }
 
   /**
@@ -139,7 +147,7 @@ class Draw extends Submenu {
   _changeDrawType(event) {
     const button = event.target.closest('.tui-image-editor-button');
     if (button) {
-      const lineType = this.getButtonType(button, ['free', 'line']);
+      const lineType = this.getButtonType(button, ['free', 'line', 'arrow']);
       this.actions.discardSelection();
 
       if (this.type === lineType) {

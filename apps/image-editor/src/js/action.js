@@ -247,6 +247,8 @@ export default {
           this.stopDrawingMode();
           if (type === 'free') {
             this.startDrawingMode('FREE_DRAWING', settings);
+          } else if (type === 'arrow') {
+            this.startDrawingMode('LINE_DRAWING', settings);
           } else {
             this.startDrawingMode('LINE_DRAWING', settings);
           }

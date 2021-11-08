@@ -23,6 +23,14 @@ export default ({ locale, makeSvgIcon }) => `
                     ${locale.localize('Straight')}
                 </label>
             </div>
+            <div class="tui-image-editor-button arrow">
+                <div>
+                    ${makeSvgIcon(['normal', 'active'], 'draw-line', true)}
+                </div>
+                <label>
+                    ${locale.localize('Arrow')}
+                </label>
+            </div>
         </li>
         <li class="tui-image-editor-partition">
             <div></div>
