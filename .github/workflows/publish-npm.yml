@@ -1,77 +1,22 @@
-name: Publish NPM
 on:
   push:
     paths:
       - 'apps/image-editor/package.json'  # 每次修改提交前 修改版本号，提交 package.json 会触发 publish 脚本
 
-env:
-  BUILD_CACHE_KEY: ${{ github.sha }}
-
+name: NPM_Publish
 jobs:
-  check-version:
-    name: Check package version
+
+  publish:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout production branch
-        uses: actions/checkout@v2
-      - name: Check package version
-        id: check
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./apps/image-editor/
-      - name: Cancel actions when version is unchanged
-        uses: andymckay/cancel-action@0.2
-        if: steps.check.outputs.is-new-version == 'false'
-
-  install-dependencies:
-    name: Install dependencies
-    needs: [check-version]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout production branch
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        id: cache-keys
-        uses: ./.github/composite-actions/install-dependencies
-    outputs:
-      root_cache_key: ${{ steps.cache-keys.outputs.root_cache_key }}
-
-  build:
-    name: Build package using cache
-    needs: [install-dependencies]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout production branch
-        uses: actions/checkout@v2
-        with:
-          ref: production
-      - name: build
-        uses: ./.github/composite-actions/build-package
-        with:
-          ROOT_CACHE_KEY: ${{ needs.install-dependencies.outputs.root_cache_key }}
-          BUILD_CACHE_KEY: ${{ env.BUILD_CACHE_KEY }}
-      - name: Get package version
-        id: version
-        uses: PostHog/check-package-version@v2
-        with:
-          path: ./apps/image-editor/
-    outputs:
-      root_cache_key: ${{ needs.install-dependencies.outputs.root_cache_key }}
-
-
-  publish-package:
-    needs: [build]
-    name: Publish package
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout production branch
-        uses: actions/checkout@v2
-        with:
-          ref: production
-      - name: Publish package
-        uses: ./.github/composite-actions/publish-package
-        with:
-          ROOT_CACHE_KEY: ${{ needs.build.outputs.root_cache_key }}
-          BUILD_CACHE_KEY: ${{ env.BUILD_CACHE_KEY }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 14
+        registry-url: https://registry.npmjs.org/
+    - run: npm i
+      working-directory: 'apps/image-editor'
+    - run: npm publish
+      working-directory: 'apps/image-editor'
+      env:
+        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}} # 上面在Github Secrets中设置的密钥
