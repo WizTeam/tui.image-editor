@@ -1,5 +1,8 @@
 name: Publish wrapper
-on: [workflow_dispatch]
+on:
+  push:
+    paths:
+      - './apps/image-editor/package.json'  # 每次修改提交前 修改版本号，提交 package.json 会触发 publish 脚本
 
 env:
   WORKING_DIRECTORY: ./apps/image-editor
@@ -44,28 +47,15 @@ jobs:
         working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
         run: |
           npm run build
-      - name: Commit files
-        run: |
-          rm -rf ./apps/react-image-editor/package-lock.json
-          rm -rf ./apps/vue-image-editor/package-lock.json
-          git config --local user.name "lja1018"
-          git config --local user.email "jaeeon.lim@nhn.com"
-          git add .
-          git commit -m "chore: update version of wrappers to v${{ steps.version.outputs.committed-version }}"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
       - name: Publish react wrapper
         working-directory: ${{ env.REACT_WRAPPER_DIRECTORY }}
         run: |
           npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish vue wrapper
         working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
         run: |
           npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
