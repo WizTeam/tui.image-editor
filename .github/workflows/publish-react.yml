@@ -16,6 +16,8 @@ jobs:
         registry-url: https://registry.npmjs.org/
     - run: npm i
       working-directory: 'apps/react-image-editor'
+    - run: npm run build
+      working-directory: 'apps/react-image-editor'
     - run: npm publish
       working-directory: 'apps/react-image-editor'
       env:
