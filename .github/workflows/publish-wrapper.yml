@@ -2,7 +2,7 @@ name: Publish wrapper
 on:
   push:
     paths:
-      - './apps/image-editor/package.json'  # 每次修改提交前 修改版本号，提交 package.json 会触发 publish 脚本
+      - './apps/react-image-editor/package.json'  # 每次修改提交前 修改版本号，提交 package.json 会触发 publish 脚本
 
 env:
   WORKING_DIRECTORY: ./apps/image-editor
@@ -39,23 +39,23 @@ jobs:
         working-directory: ${{ env.REACT_WRAPPER_DIRECTORY }}
         run: |
           npm run build
-      - name: Update lock file of Vue wrapper
-        working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
-        run: |
-          npm install
-      - name: Build vue wrapper
-        working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
-        run: |
-          npm run build
+      # - name: Update lock file of Vue wrapper
+      #   working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
+      #   run: |
+      #     npm install
+      # - name: Build vue wrapper
+      #   working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
+      #   run: |
+      #     npm run build
       - name: Publish react wrapper
         working-directory: ${{ env.REACT_WRAPPER_DIRECTORY }}
         run: |
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - name: Publish vue wrapper
-        working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
-        run: |
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # - name: Publish vue wrapper
+      #   working-directory: ${{ env.VUE_WRAPPER_DIRECTORY }}
+      #   run: |
+      #     npm publish
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
