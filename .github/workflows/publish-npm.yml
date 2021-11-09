@@ -2,7 +2,7 @@ name: Publish NPM
 on:
   push:
     paths:
-      - './apps/image-editor/package.json'  # 每次修改提交前 修改版本号，提交 package.json 会触发 publish 脚本
+      - 'apps/image-editor/package.json'  # 每次修改提交前 修改版本号，提交 package.json 会触发 publish 脚本
 
 env:
   BUILD_CACHE_KEY: ${{ github.sha }}
