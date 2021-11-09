@@ -45,6 +45,7 @@
     "not ie <= 9"
   ],
   "dependencies": {
+    "stylus": "0.55.0",
     "fabric": "^4.2.0",
     "tui-code-snippet": "^1.5.0",
     "tui-color-picker": "^2.2.6"
