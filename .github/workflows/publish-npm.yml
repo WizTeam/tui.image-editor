@@ -15,6 +15,7 @@ jobs:
         node-version: 14
         registry-url: https://registry.npmjs.org/
     - run: npm i
+    - run: npm i
       working-directory: 'apps/image-editor'
     - run: npm run build
       working-directory: 'apps/image-editor'
