@@ -18,25 +18,11 @@ runs:
       with:
         node-version: '15.x'
         registry-url: https://registry.npmjs.org/
-    - name: Checkout production branch
-      uses: actions/checkout@v2
-      with:
-        ref: production
-    - name: Check root dependencies cache
-      uses: actions/cache@v2
-      with:
-        path: ./node_modules
-        key: ${{ inputs.ROOT_CACHE_KEY }}
     - name: Install package dependencies and remove package-lock file
       working-directory: ./apps/image-editor
       run: |
         npm install && rm -rf ./package-lock.json
       shell: bash
-    - name: Check build cache
-      uses: actions/cache@v2
-      with:
-        path: ./apps/image-editor/dist
-        key: ${{ inputs.BUILD_CACHE_KEY }}
     - name: Publish package
       working-directory: ./apps/image-editor
       run: npm publish
