@@ -41,6 +41,10 @@
 <symbol id="ic-draw-line" viewBox="0 0 32 32">
     <path fill="none" stroke="inherit" d="M2 15.5h28"/>
 </symbol>
+<symbol id="ic-draw-arrow" viewBox="0 0 32 32">
+  <rect fill="none" x="4.49158" y="21.567" width="26" height="1" transform="rotate(-30 4.49158 21.567)"/>
+  <path fill="none" d="M22.2942 8.40192L27.2583 8.99999L25.2942 13.5981" stroke-linecap="square"/>
+</symbol>
 <symbol id="ic-draw" viewBox="0 0 24 24">
     <path fill="none" stroke="inherit" d="M2.5 21.5H5c.245 0 .48-.058.691-.168l.124-.065.14.01c.429.028.85-.127 1.16-.437L22.55 5.405a.5.5 0 0 0 0-.707l-3.246-3.245a.5.5 0 0 0-.707 0L3.162 16.888a1.495 1.495 0 0 0-.437 1.155l.01.14-.065.123c-.111.212-.17.448-.17.694v2.5z"/>
     <path stroke="none" fill="inherit" d="M16.414 3.707l3.89 3.89-.708.706-3.889-3.889z"/>

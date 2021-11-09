@@ -32,6 +32,7 @@ export default ({
     .tie-icon-add-button.icon-bubble .tui-image-editor-button[data-icontype="icon-bubble"] label,
     .tie-draw-line-select-button.line .tui-image-editor-button.line label,
     .tie-draw-line-select-button.free .tui-image-editor-button.free label,
+    .tie-draw-line-select-button.arrow .tui-image-editor-button.arrow label,
     .tie-flip-button.flipX .tui-image-editor-button.flipX label,
     .tie-flip-button.flipY .tui-image-editor-button.flipY label,
     .tie-flip-button.resetFlip .tui-image-editor-button.resetFlip label,

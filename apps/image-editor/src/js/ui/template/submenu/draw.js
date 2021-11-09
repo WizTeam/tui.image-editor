@@ -25,7 +25,7 @@ export default ({ locale, makeSvgIcon }) => `
             </div>
             <div class="tui-image-editor-button arrow">
                 <div>
-                    ${makeSvgIcon(['normal', 'active'], 'draw-line', true)}
+                    ${makeSvgIcon(['normal', 'active'], 'draw-arrow', true)}
                 </div>
                 <label>
                     ${locale.localize('Arrow')}
