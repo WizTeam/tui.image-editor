@@ -322,6 +322,6 @@ declare namespace tuiImageEditor {
   }
 }
 
-declare module 'tui-image-editor' {
+declare module '@wizteam/tui-image-editor' {
   export = tuiImageEditor.ImageEditor;
 }
