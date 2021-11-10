@@ -16,6 +16,9 @@ export default class ImageEditor extends React.Component {
     });
 
     this.bindEventHandlers(this.props);
+    if (this.props.onCreate) {
+      this.props.onCreate(this.imageEditorInst);
+    }
   }
 
   componentWillUnmount() {
@@ -24,6 +27,10 @@ export default class ImageEditor extends React.Component {
     this.imageEditorInst.destroy();
 
     this.imageEditorInst = null;
+    //
+    if (this.props.onDestroy) {
+      this.props.onDestroy();
+    }
   }
 
   shouldComponentUpdate(nextProps) {
