@@ -1,3 +1,5 @@
+import TuiImageEditor from '@wizteam/tui-image-editor';
+
 declare module '@wizteam/react-image-editor';
 
 interface ImageEditorOptions {
@@ -23,6 +25,8 @@ interface ImageEditorOptions {
     rotatingPointOffset?: number;
   };
   usageStatistics?: boolean;
+  onCreate?: (editor: TuiImageEditor) => void;
+  onDestroy?: () => void;
 }
 
 export default function ReactImageEditor(props: ImageEditorOptions): JSX.Element;

@@ -11,8 +11,11 @@ export default class ImageEditor extends React.Component {
   imageEditorInst = null;
 
   componentDidMount() {
+    // eslint-disable-next-line no-unused-vars
+    const { onCreate, onDestroy, ...extProps } = this.props;
+    //
     this.imageEditorInst = new TuiImageEditor(this.rootEl.current, {
-      ...this.props,
+      ...extProps,
     });
 
     this.bindEventHandlers(this.props);
