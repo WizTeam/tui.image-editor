@@ -23,6 +23,9 @@ import Draw from '@/ui/draw';
 import Filter from '@/ui/filter';
 import History from '@/ui/history';
 import Locale from '@/ui/locale/locale';
+import en from '../locale/en';
+import zh from '../locale/zh';
+import tw from '../locale/tw';
 
 const SUB_UI_COMPONENT = {
   Shape,
@@ -71,7 +74,7 @@ class Ui {
     this.submenu = false;
     this.imageSize = {};
     this.uiSize = {};
-    this._locale = new Locale(this.options.locale);
+    this._locale = this.initLocale();
     this.theme = new Theme(this.options.theme);
     this.eventHandler = {};
     this._submenuChangeTransection = false;
@@ -89,6 +92,19 @@ class Ui {
 
     this._attachHistoryEvent();
     this._attachZoomEvent();
+  }
+
+  /**
+   * Init locale
+   */
+  initLocale() {
+    let locale = en;
+    if (this.options.locale === 'zh') {
+      locale = zh;
+    } else if (this.options.locale === 'tw') {
+      locale = tw;
+    }
+    this.locale = new Locale(locale);
   }
 
   /**
@@ -266,7 +282,7 @@ class Ui {
           width: '100%',
           height: '100%',
         },
-        menuBarPosition: 'bottom',
+        menuBarPosition: 'right',
       },
       options
     );
