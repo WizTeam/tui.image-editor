@@ -4,7 +4,7 @@ declare module '@wizteam/react-image-editor';
 
 interface ImageEditorOptions {
   includeUI: {
-    loadImage: {
+    loadImage?: {
       path: string;
       name: string;
     };
@@ -28,5 +28,7 @@ interface ImageEditorOptions {
   onCreate?: (editor: TuiImageEditor) => void;
   onDestroy?: () => void;
 }
+
+export { TuiImageEditor };
 
 export default function ReactImageEditor(props: ImageEditorOptions): JSX.Element;
