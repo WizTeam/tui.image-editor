@@ -20,7 +20,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'icon-arrow-2', true)}
                 </div>
                 <label>
-                    ${locale.localize('Arrow-2')}
+                    ${locale.localize('Arrow2')}
                 </label>
             </div>
             <div class="tui-image-editor-button" data-icontype="icon-arrow-3">
@@ -28,7 +28,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'icon-arrow-3', true)}
                 </div>
                 <label>
-                    ${locale.localize('Arrow-3')}
+                    ${locale.localize('Arrow3')}
                 </label>
             </div>
             <div class="tui-image-editor-button" data-icontype="icon-star">
@@ -36,7 +36,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'icon-star', true)}
                 </div>
                 <label>
-                    ${locale.localize('Star-1')}
+                    ${locale.localize('Star')}
                 </label>
             </div>
             <div class="tui-image-editor-button" data-icontype="icon-star-2">
@@ -44,7 +44,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'icon-star-2', true)}
                 </div>
                 <label>
-                    ${locale.localize('Star-2')}
+                    ${locale.localize('Star2')}
                 </label>
             </div>
 
@@ -94,7 +94,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'icon-load', true)}
                 </div>
                 <label>
-                    ${locale.localize('Custom icon')}
+                    ${locale.localize('CustomIcon')}
                 </label>
             </div>
         </li>

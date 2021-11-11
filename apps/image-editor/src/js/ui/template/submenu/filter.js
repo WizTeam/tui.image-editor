@@ -27,7 +27,7 @@ export default ({ locale }) => `
                 <div class="tui-image-editor-checkbox">
                     <label>
                         <input type="checkbox" class="tie-vintage">
-                        <span>${locale.localize('Sepia2')}</span>
+                        <span>${locale.localize('Vintage')}</span>
                     </label>
                 </div>
                 <div class="tui-image-editor-checkbox">
@@ -59,7 +59,7 @@ export default ({ locale }) => `
                     <div class="tui-image-editor-checkbox">
                         <label>
                             <input type="checkbox" class="tie-remove-white">
-                            <span>${locale.localize('Remove White')}</span>
+                            <span>${locale.localize('RemoveWhite')}</span>
                         </label>
                     </div>
                 </div>
@@ -111,7 +111,7 @@ export default ({ locale }) => `
                     <div class="tui-image-editor-checkbox">
                         <label>
                             <input type="checkbox" class="tie-color-filter">
-                            <span>${locale.localize('Color Filter')}</span>
+                            <span>${locale.localize('ColorFilter')}</span>
                         </label>
                     </div>
                 </div>

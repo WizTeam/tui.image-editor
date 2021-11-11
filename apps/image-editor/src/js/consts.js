@@ -56,13 +56,13 @@ export const OBJ_TYPE = {
  * @type {Object.<string, string>}
  */
 export const filterType = {
-  VINTAGE: 'vintage',
-  SEPIA2: 'sepia2',
-  REMOVE_COLOR: 'removeColor',
-  COLOR_FILTER: 'colorFilter',
-  REMOVE_WHITE: 'removeWhite',
-  BLEND_COLOR: 'blendColor',
-  BLEND: 'blend',
+  VINTAGE: 'Vintage',
+  SEPIA2: 'Sepia2',
+  REMOVE_COLOR: 'RemoveColor',
+  COLOR_FILTER: 'ColorFilter',
+  REMOVE_WHITE: 'RemoveWhite',
+  BLEND_COLOR: 'BlendColor',
+  BLEND: 'Blend',
 };
 
 /**
@@ -196,6 +196,8 @@ export const historyNames = {
   ADD_MASK_IMAGE: 'Mask',
   ADD_IMAGE_OBJECT: 'Mask',
   CROP: 'Crop',
+  ROTATE: 'Rotate',
+  FLIP: 'Flip',
   RESIZE: 'Resize',
   APPLY_FILTER: 'Filter',
   REMOVE_FILTER: 'Filter',

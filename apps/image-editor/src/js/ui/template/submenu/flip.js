@@ -12,7 +12,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'flip-x', true)}
                 </div>
                 <label>
-                    ${locale.localize('Flip X')}
+                    ${locale.localize('FlipX')}
                 </label>
             </div>
             <div class="tui-image-editor-button flipY">
@@ -20,7 +20,7 @@ export default ({ locale, makeSvgIcon }) => `
                     ${makeSvgIcon(['normal', 'active'], 'flip-y', true)}
                 </div>
                 <label>
-                    ${locale.localize('Flip Y')}
+                    ${locale.localize('FlipY')}
                 </label>
             </div>
         </li>

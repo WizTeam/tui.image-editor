@@ -12,7 +12,7 @@ export default ({ locale, makeSvgIcon }) => `
                     <input type="file" accept="image/*" class="tie-mask-image-file">
                     ${makeSvgIcon(['normal', 'active'], 'mask-load', true)}
                 </div>
-                <label> ${locale.localize('Load Mask Image')} </label>
+                <label> ${locale.localize('LoadMaskImage')} </label>
             </div>
         </li>
         <li class="tui-image-editor-partition only-left-right">

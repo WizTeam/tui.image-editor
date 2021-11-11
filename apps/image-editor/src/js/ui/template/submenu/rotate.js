@@ -24,7 +24,7 @@ export default ({ locale, makeSvgIcon }) => `
             <div></div>
         </li>
         <li class="tui-image-editor-newline tui-image-editor-range-wrap">
-            <label class="range">${locale.localize('Range')}</label>
+            <label class="range">${locale.localize('RotateAngle')}</label>
             <div class="tie-rotate-range"></div>
             <input class="tie-rotate-range-value tui-image-editor-range-value" value="0" />
         </li>

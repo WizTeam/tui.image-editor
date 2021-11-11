@@ -1,4 +1,7 @@
+/* eslint-disable no-console */
+/* eslint-disable complexity */
 import snippet from 'tui-code-snippet';
+import queryString from 'query-string';
 import { getSelector, assignmentForDestroy, cls, getHistoryTitle, isSilentCommand } from '@/util';
 import {
   ZOOM_HELP_MENUS,
@@ -52,6 +55,28 @@ const ZOOM_BUTTON_TYPE = {
   HAND: 'hand',
 };
 
+function matchLanguage(lang) {
+  if (!lang) {
+    return 'en';
+  }
+  const test = lang.toLocaleLowerCase().replace(/_/g, '-');
+  if (test === 'cn' || test.startsWith('zh-cn') || test.startsWith('zh-hans')) {
+    return 'cn';
+  }
+  if (test === 'tw' || test.startsWith('zh-tw') || test.startsWith('zh-hant')) {
+    return 'tw';
+  }
+
+  return 'en';
+}
+
+function matchLang() {
+  const parsed = queryString.parse(window.location.search);
+  const lang = matchLanguage(parsed.lang || navigator.language);
+
+  return lang;
+}
+
 /**
  * Ui class
  * @class
@@ -74,7 +99,7 @@ class Ui {
     this.submenu = false;
     this.imageSize = {};
     this.uiSize = {};
-    this._locale = this.initLocale();
+    this._locale = new Locale(this.getLocale());
     this.theme = new Theme(this.options.theme);
     this.eventHandler = {};
     this._submenuChangeTransection = false;
@@ -95,16 +120,18 @@ class Ui {
   }
 
   /**
-   * Init locale
+   * get locale
    */
-  initLocale() {
+  getLocale() {
+    const lang = matchLang();
     let locale = en;
-    if (this.options.locale === 'zh') {
+    if (lang === 'cn') {
       locale = zh;
-    } else if (this.options.locale === 'tw') {
+    } else if (lang === 'tw') {
       locale = tw;
     }
-    this.locale = new Locale(locale);
+
+    return locale;
   }
 
   /**

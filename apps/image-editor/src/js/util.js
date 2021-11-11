@@ -437,10 +437,13 @@ export function getHistoryTitle(command) {
 
   switch (name) {
     case FLIP_IMAGE:
-      historyInfo = { name, detail: args[1] === 'reset' ? args[1] : args[1].slice(4) };
+      historyInfo = {
+        name: historyNames.FLIP,
+        detail: args[1] === 'reset' ? 'Reset' : args[1].slice(4),
+      };
       break;
     case ROTATE_IMAGE:
-      historyInfo = { name, detail: args[2] };
+      historyInfo = { name: historyNames.ROTATE, detail: args[2] };
       break;
     case APPLY_FILTER:
       historyInfo = { name: historyNames.APPLY_FILTER, detail: getFilterType(args[1], args[2]) };

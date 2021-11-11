@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @author NHN. FE Development Team <dl_javascript@nhn.com>
  * @fileoverview Image-editor application class
@@ -1494,6 +1495,8 @@ class ImageEditor {
    * });;
    */
   applyFilter(type, options, isSilent) {
+    console.log(`applyFilter:${type}`);
+    console.log(`applyFilter:${options}`);
     const executeMethodName = isSilent ? 'executeSilent' : 'execute';
 
     return this[executeMethodName](commands.APPLY_FILTER, type, options);

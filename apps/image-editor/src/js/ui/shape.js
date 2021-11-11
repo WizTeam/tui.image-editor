@@ -136,13 +136,17 @@ class Shape extends Submenu {
    */
   setShapeStatus({ strokeWidth, strokeColor, fillColor }) {
     this._els.strokeRange.value = strokeWidth;
-    this._els.strokeColorpicker.color = strokeColor;
-    this._els.fillColorpicker.color = fillColor;
+    this._els.strokeColorpicker.color = strokeColor === 'transparent' ? '' : strokeColor;
+    this._els.fillColorpicker.color = fillColor.color === 'transparent' ? '' : fillColor.color;
     this.options.stroke = strokeColor;
     this.options.fill = fillColor;
     this.options.strokeWidth = strokeWidth;
 
-    this.actions.setDrawingShape(this.type, { strokeWidth });
+    this.actions.setDrawingShape(this.type, {
+      strokeWidth,
+      fill: fillColor.color,
+      stroke: strokeColor,
+    });
   }
 
   /**
@@ -246,6 +250,7 @@ class Shape extends Submenu {
     this.actions.changeShape({
       fill: color,
     });
+    this.actions.setDrawingShape(this.type, { fill: color });
   }
 
   /**
@@ -259,6 +264,7 @@ class Shape extends Submenu {
     this.actions.changeShape({
       stroke: color,
     });
+    this.actions.setDrawingShape(this.type, { stroke: color });
   }
 }
 
