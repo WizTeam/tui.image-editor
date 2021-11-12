@@ -84,6 +84,7 @@ const tw = {
   All: '全部',
   RemoveColor: '去除顏色',
   BlendColor: '混合色',
+  Finish: '完成',
 };
 
 export default tw;

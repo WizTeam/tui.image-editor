@@ -3,7 +3,8 @@ var blackTheme = {
   'common.bisize.width': '251px',
   'common.bisize.height': '21px',
   'common.backgroundImage': 'none',
-  'common.backgroundColor': '#1e1e1e',
+  // 'common.backgroundColor': '#1e1e1e',
+  'common.backgroundColor': '#121212',
   'common.border': '0px',
 
   // header
@@ -19,15 +20,24 @@ var blackTheme = {
   'loadButton.fontSize': '12px',
 
   // download button
-  'downloadButton.backgroundColor': '#fdba3b',
-  'downloadButton.border': '1px solid #fdba3b',
+  // 'downloadButton.backgroundColor': '#fdba3b',
+  // 'downloadButton.border': '1px solid #fdba3b',
+  // 'downloadButton.color': '#fff',
+  // 'downloadButton.fontFamily': "'Noto Sans', sans-serif",
+  // 'downloadButton.fontSize': '12px',
+
+  // finish button
+  'downloadButton.backgroundColor': '#448aff',
+  'downloadButton.borderRadius': '33px',
   'downloadButton.color': '#fff',
-  'downloadButton.fontFamily': "'Noto Sans', sans-serif",
-  'downloadButton.fontSize': '12px',
+  'downloadButton.fontFamily': "'PingFang SC'",
+  'downloadButton.fontSize': '14px',
+  'downloadButton.fontWeight': '500', 
 
   // main icons
-  'menu.normalIcon.color': '#8a8a8a',
-  'menu.activeIcon.color': '#555555',
+  'menu.normalIcon.color': '#f0f0f0',
+  // 'menu.activeIcon.color': '#555555',
+  'menu.activeIcon.color': '#ffffff',
   'menu.disabledIcon.color': '#434343',
   'menu.hoverIcon.color': '#e9e9e9',
   'menu.iconSize.width': '24px',

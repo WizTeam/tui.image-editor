@@ -84,6 +84,7 @@ const en = {
   All: 'All',
   RemoveColor: 'Remove color',
   BlendColor: 'Blend color',
+  Finish: 'Finish',
 };
 
 export default en;

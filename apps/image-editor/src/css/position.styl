@@ -78,6 +78,14 @@
 .{prefix}-container
   &.right
     .{prefix}-menu
+        position: absolute;
+        top: 160px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 24px 8px;
         > .{prefix}-item[tooltip-content]
             &:before
                 left: -3px;
@@ -91,7 +99,7 @@
                 right: 43px;
                 white-space: nowrap;
     .{prefix}-submenu
-        right: 0;
+        right: 12px;
         height: 100%;
         width: 248px;
     .{prefix}-main-container 
@@ -234,11 +242,16 @@
     .{prefix}-help-menu
         &.left
             white-space: inherit;
-            width: 40px;
-            height: 506px;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
+            // width: 40px;
+            // height: 506px;
+            // left: 8px;
+            // top: 50%;
+            // transform: translateY(-50%);
+            left: 20px;
+            top: 160px;
+            padding: 24px 4px;
+            display: flex;
+            flex-direction: column;
             .tie-panel-history
                 left: 140px;
                 top: -4px;
@@ -249,7 +262,7 @@
                 left: -8px;
                 top: 14px;
             .{prefix}-item
-                margin: 4px auto;
+                margin: auto;
                 padding: 6px 8px;
             > .{prefix}-item[tooltip-content]
                 &:before
