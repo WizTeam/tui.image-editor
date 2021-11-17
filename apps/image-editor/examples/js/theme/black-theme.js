@@ -35,13 +35,21 @@ var blackTheme = {
   'downloadButton.fontWeight': '500', 
 
   // main icons
-  'menu.normalIcon.color': '#f0f0f0',
+  'menu.normalIcon.color': '#555555',
   // 'menu.activeIcon.color': '#555555',
   'menu.activeIcon.color': '#ffffff',
   'menu.disabledIcon.color': '#434343',
   'menu.hoverIcon.color': '#e9e9e9',
   'menu.iconSize.width': '24px',
   'menu.iconSize.height': '24px',
+
+  // action menu icons
+  'actionMenu.normalIcon.color': '#f0f0f0',
+  'actionMenu.activeIcon.color': '#ffffff',
+  'actionMenu.disabledIcon.color': '#434343',
+  'actionMenu.hoverIcon.color': '#e9e9e9',
+  'actionMenu.iconSize.width': '24px',
+  'actionMenu.iconSize.height': '24px',
 
   // submenu icons
   'submenu.normalIcon.color': '#8a8a8a',

@@ -18,6 +18,7 @@ export default ({
   menuIconSize,
   biSize,
   menuIconStyle,
+  actionMenuIconStyle,
   submenuIconStyle,
 }) => `
     .tie-icon-add-button.icon-bubble .tui-image-editor-button[data-icontype="icon-bubble"] label,
@@ -110,25 +111,41 @@ export default ({
     .tui-image-editor-container .tui-image-editor-header-logo > img {
         ${biSize}
     }
-    .tui-image-editor-menu use.normal.use-default,
+    .tui-image-editor-menu use.normal.use-default {
+        fill-rule: evenodd;
+        fill: ${actionMenuIconStyle.normal.color};
+        stroke: ${actionMenuIconStyle.normal.color};
+    }
+    .tui-image-editor-menu use.active.use-default {
+        fill-rule: evenodd;
+        fill: ${actionMenuIconStyle.active.color};
+        stroke: ${actionMenuIconStyle.active.color};
+    }
+    .tui-image-editor-menu use.hover.use-default {
+        fill-rule: evenodd;
+        fill: ${actionMenuIconStyle.hover.color};
+        stroke: ${actionMenuIconStyle.hover.color};
+    }
+    .tui-image-editor-menu use.disabled.use-default {
+        fill-rule: evenodd;
+        fill: ${actionMenuIconStyle.disabled.color};
+        stroke: ${actionMenuIconStyle.disabled.color};
+    }
     .tui-image-editor-help-menu use.normal.use-default {
         fill-rule: evenodd;
         fill: ${menuIconStyle.normal.color};
         stroke: ${menuIconStyle.normal.color};
     }
-    .tui-image-editor-menu use.active.use-default,
     .tui-image-editor-help-menu use.active.use-default {
         fill-rule: evenodd;
         fill: ${menuIconStyle.active.color};
         stroke: ${menuIconStyle.active.color};
     }
-    .tui-image-editor-menu use.hover.use-default,
     .tui-image-editor-help-menu use.hover.use-default {
         fill-rule: evenodd;
         fill: ${menuIconStyle.hover.color};
         stroke: ${menuIconStyle.hover.color};
     }
-    .tui-image-editor-menu use.disabled.use-default,
     .tui-image-editor-help-menu use.disabled.use-default {
         fill-rule: evenodd;
         fill: ${menuIconStyle.disabled.color};

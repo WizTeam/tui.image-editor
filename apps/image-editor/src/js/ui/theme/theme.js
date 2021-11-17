@@ -40,6 +40,14 @@ class Theme {
           disabled: this.styles[`${firstProperty}.disabledIcon`],
         };
         break;
+      case 'actionMenu.icon':
+        result = {
+          active: this.styles[`${firstProperty}.activeIcon`],
+          normal: this.styles[`${firstProperty}.normalIcon`],
+          hover: this.styles[`${firstProperty}.hoverIcon`],
+          disabled: this.styles[`${firstProperty}.disabledIcon`],
+        };
+        break;
       case 'submenu.icon':
         result = {
           active: this.styles[`${firstProperty}.activeIcon`],
@@ -111,6 +119,7 @@ class Theme {
       menuIconSize: this.getStyle('menu.iconSize'),
       submenuIconSize: this.getStyle('submenu.iconSize'),
       menuIconStyle: this.getStyle('menu.icon'),
+      actionMenuIconStyle: this.getStyle('actionMenu.icon'),
       submenuIconStyle: this.getStyle('submenu.icon'),
     });
   }
@@ -187,8 +196,14 @@ class Theme {
    * @returns {string}
    * @private
    */
-  _makeIconClassName(iconType, isSubmenu) {
-    const iconStyleInfo = isSubmenu ? this.getStyle('submenu.icon') : this.getStyle('menu.icon');
+  _makeIconClassName(iconType, isActionMenu, isSubMenu) {
+    let menuStyle = 'menu.icon';
+    if (isActionMenu) {
+      menuStyle = 'actionMenu.icon';
+    } else if (isSubMenu) {
+      menuStyle = 'submenu.icon';
+    }
+    const iconStyleInfo = this.getStyle(menuStyle);
     const { path, name } = iconStyleInfo[iconType];
 
     return path && name ? iconType : `${iconType} use-default`;
@@ -201,8 +216,14 @@ class Theme {
    * @returns {string}
    * @private
    */
-  _makeSvgIconPrefix(iconType, isSubmenu) {
-    const iconStyleInfo = isSubmenu ? this.getStyle('submenu.icon') : this.getStyle('menu.icon');
+  _makeSvgIconPrefix(iconType, isActionMenu, isSubMenu) {
+    let menuStyle = 'menu.icon';
+    if (isActionMenu) {
+      menuStyle = 'actionMenu.icon';
+    } else if (isSubMenu) {
+      menuStyle = 'submenu.icon';
+    }
+    const iconStyleInfo = this.getStyle(menuStyle);
     const { path, name } = iconStyleInfo[iconType];
 
     return path && name ? `${path}#${name}-` : '#';
