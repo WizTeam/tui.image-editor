@@ -1,6 +1,7 @@
 import { extend, forEach, map } from 'tui-code-snippet';
 import style from '@/ui/template/style';
-import standardTheme from '@/ui/theme/standard';
+// import standardTheme from '@/ui/theme/standard';
+import blackTheme from '@/ui/theme/blackTheme';
 import icon from '@svg/default.svg';
 import { styleLoad } from '@/util';
 
@@ -12,7 +13,7 @@ import { styleLoad } from '@/util';
  */
 class Theme {
   constructor(customTheme) {
-    this.styles = this._changeToObject(extend({}, standardTheme, customTheme));
+    this.styles = this._changeToObject(extend({}, blackTheme, customTheme));
     styleLoad(this._styleMaker());
 
     this._loadDefaultSvgIcon();
@@ -40,7 +41,7 @@ class Theme {
           disabled: this.styles[`${firstProperty}.disabledIcon`],
         };
         break;
-      case 'actionMenu.icon':
+      case 'editorMenu.icon':
         result = {
           active: this.styles[`${firstProperty}.activeIcon`],
           normal: this.styles[`${firstProperty}.normalIcon`],
@@ -119,7 +120,7 @@ class Theme {
       menuIconSize: this.getStyle('menu.iconSize'),
       submenuIconSize: this.getStyle('submenu.iconSize'),
       menuIconStyle: this.getStyle('menu.icon'),
-      actionMenuIconStyle: this.getStyle('actionMenu.icon'),
+      editorMenuIconStyle: this.getStyle('editorMenu.icon'),
       submenuIconStyle: this.getStyle('submenu.icon'),
     });
   }

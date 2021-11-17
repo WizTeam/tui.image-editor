@@ -18,7 +18,7 @@ export default ({
   menuIconSize,
   biSize,
   menuIconStyle,
-  actionMenuIconStyle,
+  editorMenuIconStyle,
   submenuIconStyle,
 }) => `
     .tie-icon-add-button.icon-bubble .tui-image-editor-button[data-icontype="icon-bubble"] label,
@@ -113,23 +113,23 @@ export default ({
     }
     .tui-image-editor-menu use.normal.use-default {
         fill-rule: evenodd;
-        fill: ${actionMenuIconStyle.normal.color};
-        stroke: ${actionMenuIconStyle.normal.color};
+        fill: ${editorMenuIconStyle.normal.color};
+        stroke: ${editorMenuIconStyle.normal.color};
     }
     .tui-image-editor-menu use.active.use-default {
         fill-rule: evenodd;
-        fill: ${actionMenuIconStyle.active.color};
-        stroke: ${actionMenuIconStyle.active.color};
+        fill: ${editorMenuIconStyle.active.color};
+        stroke: ${editorMenuIconStyle.active.color};
     }
     .tui-image-editor-menu use.hover.use-default {
         fill-rule: evenodd;
-        fill: ${actionMenuIconStyle.hover.color};
-        stroke: ${actionMenuIconStyle.hover.color};
+        fill: ${editorMenuIconStyle.hover.color};
+        stroke: ${editorMenuIconStyle.hover.color};
     }
     .tui-image-editor-menu use.disabled.use-default {
         fill-rule: evenodd;
-        fill: ${actionMenuIconStyle.disabled.color};
-        stroke: ${actionMenuIconStyle.disabled.color};
+        fill: ${editorMenuIconStyle.disabled.color};
+        stroke: ${editorMenuIconStyle.disabled.color};
     }
     .tui-image-editor-help-menu use.normal.use-default {
         fill-rule: evenodd;
