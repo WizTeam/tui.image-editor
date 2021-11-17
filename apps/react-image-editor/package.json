@@ -1,6 +1,6 @@
 {
   "name": "@wizteam/react-image-editor",
-  "version": "3.15.15",
+  "version": "3.15.16",
   "description": "TOAST UI Image-Editor for React",
   "main": "dist/toastui-react-image-editor.js",
   "files": [
