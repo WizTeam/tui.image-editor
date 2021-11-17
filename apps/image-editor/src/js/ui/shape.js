@@ -137,7 +137,8 @@ class Shape extends Submenu {
   setShapeStatus({ strokeWidth, strokeColor, fillColor }) {
     this._els.strokeRange.value = strokeWidth;
     this._els.strokeColorpicker.color = strokeColor === 'transparent' ? '' : strokeColor;
-    this._els.fillColorpicker.color = fillColor.color === 'transparent' ? '' : fillColor.color;
+    this._els.fillColorpicker.color =
+      fillColor && fillColor.color !== 'transparent' ? fillColor.color : '';
     this.options.stroke = strokeColor;
     this.options.fill = fillColor;
     this.options.strokeWidth = strokeWidth;
