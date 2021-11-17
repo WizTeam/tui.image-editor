@@ -196,14 +196,8 @@ class Theme {
    * @returns {string}
    * @private
    */
-  _makeIconClassName(iconType, isActionMenu, isSubMenu) {
-    let menuStyle = 'menu.icon';
-    if (isActionMenu) {
-      menuStyle = 'actionMenu.icon';
-    } else if (isSubMenu) {
-      menuStyle = 'submenu.icon';
-    }
-    const iconStyleInfo = this.getStyle(menuStyle);
+  _makeIconClassName(iconType, isSubmenu) {
+    const iconStyleInfo = isSubmenu ? this.getStyle('submenu.icon') : this.getStyle('menu.icon');
     const { path, name } = iconStyleInfo[iconType];
 
     return path && name ? iconType : `${iconType} use-default`;
@@ -216,14 +210,8 @@ class Theme {
    * @returns {string}
    * @private
    */
-  _makeSvgIconPrefix(iconType, isActionMenu, isSubMenu) {
-    let menuStyle = 'menu.icon';
-    if (isActionMenu) {
-      menuStyle = 'actionMenu.icon';
-    } else if (isSubMenu) {
-      menuStyle = 'submenu.icon';
-    }
-    const iconStyleInfo = this.getStyle(menuStyle);
+  _makeSvgIconPrefix(iconType, isSubmenu) {
+    const iconStyleInfo = isSubmenu ? this.getStyle('submenu.icon') : this.getStyle('menu.icon');
     const { path, name } = iconStyleInfo[iconType];
 
     return path && name ? `${path}#${name}-` : '#';
