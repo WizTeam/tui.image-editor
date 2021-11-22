@@ -33,6 +33,14 @@ var whiteTheme = {
   'menu.iconSize.width': '24px',
   'menu.iconSize.height': '24px',
 
+  // editor menu icons
+  'editorMenu.normalIcon.color': '#f0f0f0',
+  'editorMenu.activeIcon.color': '#ffffff',
+  'editorMenu.disabledIcon.color': '#434343',
+  'editorMenu.hoverIcon.color': '#e9e9e9',
+  'editorMenu.iconSize.width': '24px',
+  'editorMenu.iconSize.height': '24px',
+
   // submenu icons
   'submenu.normalIcon.color': '#8a8a8a',
   'submenu.activeIcon.color': '#555555',

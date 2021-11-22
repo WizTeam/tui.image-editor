@@ -1,4 +1,4 @@
-const blackTheme = {
+var blackTheme = {
   'common.bi.image': 'https://uicdn.toast.com/toastui/img/tui-image-editor-bi.png',
   'common.bisize.width': '251px',
   'common.bisize.height': '21px',
@@ -85,4 +85,3 @@ const blackTheme = {
   'colorpicker.title.color': '#fff',
 };
 
-export default blackTheme;
