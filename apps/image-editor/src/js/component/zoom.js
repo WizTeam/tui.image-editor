@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable no-console */
 /**
  * @author NHN. FE Development Team <dl_javascript@nhn.com>
  * @fileoverview Image zoom module (start zoom, end zoom)
@@ -72,6 +74,12 @@ class Zoom extends Component {
      * @type {Array.<{prevZoomLevel: number, zoomLevel: number, x: number, y: number}>}
      */
     this._centerPoints = [];
+
+    /**
+     * Center point of zooms
+     * @type {Array.<{x: number, y: number}>}
+     */
+    this._centerPoint = { x: 0, y: 0 };
 
     /**
      * Zoom level (default: 100%(1.0), max: 400%(4.0))
@@ -457,27 +465,72 @@ class Zoom extends Component {
   }
 
   /**
-   * Zoom out one step
+   * Zoom in one step
    */
-  zoomOut() {
-    const centerPoints = this._centerPoints;
-
-    if (!centerPoints.length) {
+  zoomIn() {
+    if (this._isMaxZoomLevel()) {
       return;
     }
 
     const canvas = this.getCanvas();
-    const point = centerPoints.pop();
-    const { x, y, prevZoomLevel } = point;
+    const newZoomLevel = this.zoomLevel + 0.1;
+    const { x: centerX, y: centerY } = this._centerPoint;
 
-    if (this._isDefaultZoomLevel(prevZoomLevel)) {
-      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-    } else {
-      canvas.zoomToPoint({ x, y }, prevZoomLevel);
+    if (centerX === 0 && centerY === 0) {
+      const canvasImage = this.getCanvasImage();
+      const { left, top, width, height } = canvasImage.getBoundingRect();
+      this._centerPoint = {
+        x: left + width / 2,
+        y: top + height / 2,
+      };
+    }
+    canvas.zoomToPoint({ x: this._centerPoint.x, y: this._centerPoint.y }, newZoomLevel);
+    this.zoomLevel = newZoomLevel;
+    this._fireZoomChanged(canvas, this.zoomLevel);
+  }
+
+  /**
+   * Zoom out one step
+   */
+  zoomOut() {
+    // const centerPoints = this._centerPoints;
+
+    // if (!centerPoints.length) {
+    //   return;
+    // }
+
+    // const canvas = this.getCanvas();
+    // const point = centerPoints.pop();
+    // const { x, y, prevZoomLevel } = point;
+
+    // if (this._isDefaultZoomLevel(prevZoomLevel)) {
+    //   canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    // } else {
+    //   canvas.zoomToPoint({ x, y }, prevZoomLevel);
+    // }
+
+    // this.zoomLevel = prevZoomLevel;
+
+    // this._fireZoomChanged(canvas, this.zoomLevel);
+
+    if (this._isMinZoomLevel()) {
+      return;
     }
 
-    this.zoomLevel = prevZoomLevel;
+    const canvas = this.getCanvas();
+    const newZoomLevel = this.zoomLevel - 0.1;
+    const { x: centerX, y: centerY } = this._centerPoint;
+    if (centerX === 0 && centerY === 0) {
+      const canvasImage = this.getCanvasImage();
+      const { left, top, width, height } = canvasImage.getBoundingRect();
+      this._centerPoint = {
+        x: left + width / 2,
+        y: top + height / 2,
+      };
+    }
+    canvas.zoomToPoint({ x: this._centerPoint.x, y: this._centerPoint.y }, newZoomLevel);
 
+    this.zoomLevel = newZoomLevel;
     this._fireZoomChanged(canvas, this.zoomLevel);
   }
 
@@ -505,29 +558,50 @@ class Zoom extends Component {
   }
 
   /**
+   * Whether zoom level is min (0.5)
+   * @returns {boolean}
+   * @private
+   */
+  _isMinZoomLevel() {
+    return this.zoomLevel <= 0.5;
+  }
+
+  /**
    * Move point of zoom
    * @param {{x: number, y: number}} delta - move amount
    * @private
    */
   _movePointOfZoom({ x: deltaX, y: deltaY }) {
-    const centerPoints = this._centerPoints;
+    // const centerPoints = this._centerPoints;
 
-    if (!centerPoints.length) {
-      return;
-    }
+    // if (!centerPoints.length) {
+    //   return;
+    // }
+
+    // const canvas = this.getCanvas();
+    // const { zoomLevel } = this;
+
+    // const point = centerPoints.pop();
+    // const { x: originX, y: originY, prevZoomLevel } = point;
+    // const x = originX - deltaX;
+    // const y = originY - deltaY;
+
+    // canvas.zoomToPoint({ x: originX, y: originY }, prevZoomLevel);
+    // canvas.zoomToPoint({ x, y }, zoomLevel);
+    // centerPoints.push({ x, y, prevZoomLevel, zoomLevel });
+
+    // this._fireZoomChanged(canvas, zoomLevel);
 
     const canvas = this.getCanvas();
     const { zoomLevel } = this;
 
-    const point = centerPoints.pop();
-    const { x: originX, y: originY, prevZoomLevel } = point;
+    const { x: originX, y: originY } = this._centerPoint;
     const x = originX - deltaX;
     const y = originY - deltaY;
 
-    canvas.zoomToPoint({ x: originX, y: originY }, prevZoomLevel);
+    this._centerPoint = { x, y };
+    canvas.zoomToPoint({ x: originX, y: originY }, zoomLevel - 0.1);
     canvas.zoomToPoint({ x, y }, zoomLevel);
-    centerPoints.push({ x, y, prevZoomLevel, zoomLevel });
-
     this._fireZoomChanged(canvas, zoomLevel);
   }
 

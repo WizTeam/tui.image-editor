@@ -206,7 +206,8 @@ class Ui {
     editorElementStyle.height = `${height}px`;
     editorElementStyle.width = `${width}px`;
 
-    this._setEditorPosition(menuBarPosition);
+    // this._setEditorPosition(menuBarPosition);
+    this._setEditorPosition();
 
     this._editorElementWrap.style.bottom = `0px`;
     this._editorElementWrap.style.top = `0px`;
@@ -238,6 +239,15 @@ class Ui {
       this._buttonElements[ZOOM_BUTTON_TYPE.HAND].classList.remove(CLASS_NAME_ON);
     } else {
       this._buttonElements[ZOOM_BUTTON_TYPE.ZOOM_IN].classList.remove(CLASS_NAME_ON);
+    }
+  }
+
+  setZoomHandButtonStatus(on) {
+    const targetClassList = this._buttonElements.hand.classList;
+    if (on) {
+      targetClassList.add(CLASS_NAME_ON);
+    } else {
+      targetClassList.remove(CLASS_NAME_ON);
     }
   }
 
@@ -465,7 +475,7 @@ class Ui {
       if (!menuName) {
         this._makeMenuPartitionElement();
       } else {
-        this._makeMenuElement(menuName, ['normal', 'disabled', 'hover'], 'help');
+        this._makeMenuElement(menuName, ['normal', 'disabled', 'hover', 'active'], 'help');
 
         this._buttonElements[menuName] = this._helpMenuBarElement.querySelector(
           `.tie-btn-${menuName}`
@@ -762,6 +772,7 @@ class Ui {
            <tr><td class="dot left-bottom"></td><td></td><td class="dot right-bottom"></td></tr>
          </table>`;
     gridVisual.innerHTML = grid;
+
     this._editorContainerElement = this._editorElement.querySelector(
       '.tui-image-editor-canvas-container'
     );
@@ -860,42 +871,45 @@ class Ui {
    * @private
    */
   // eslint-disable-next-line complexity
-  _setEditorPosition(menuBarPosition) {
-    const { width, height } = this._getCanvasMaxDimension();
-    const editorElementStyle = this._editorElement.style;
-    let top = 0;
-    let left = 0;
-
-    if (this.submenu) {
-      if (menuBarPosition === 'bottom') {
-        if (height > this._editorElementWrap.scrollHeight - 150) {
-          top = (height - this._editorElementWrap.scrollHeight) / 2;
-        } else {
-          top = (150 / 2) * -1;
-        }
-      } else if (menuBarPosition === 'top') {
-        if (height > this._editorElementWrap.offsetHeight - 150) {
-          top = 150 / 2 - (height - (this._editorElementWrap.offsetHeight - 150)) / 2;
-        } else {
-          top = 150 / 2;
-        }
-      } else if (menuBarPosition === 'left') {
-        if (width > this._editorElementWrap.offsetWidth - 248) {
-          left = 248 / 2 - (width - (this._editorElementWrap.offsetWidth - 248)) / 2;
-        } else {
-          left = 248 / 2;
-        }
-      } else if (menuBarPosition === 'right') {
-        if (width > this._editorElementWrap.scrollWidth - 248) {
-          left = (width - this._editorElementWrap.scrollWidth) / 2;
-        } else {
-          left = (248 / 2) * -1;
-        }
-      }
-    }
-    editorElementStyle.top = `${top}px`;
-    editorElementStyle.left = `${left}px`;
+  _setEditorPosition() {
+    this._editorElement.style = `top: 0px; left: 0px; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center`;
   }
+  // _setEditorPosition(menuBarPosition) {
+  //   const { width, height } = this._getCanvasMaxDimension();
+  //   const editorElementStyle = this._editorElement.style;
+  //   let top = 0;
+  //   let left = 0;
+
+  //   if (this.submenu) {
+  //     if (menuBarPosition === 'bottom') {
+  //       if (height > this._editorElementWrap.scrollHeight - 150) {
+  //         top = (height - this._editorElementWrap.scrollHeight) / 2;
+  //       } else {
+  //         top = (150 / 2) * -1;
+  //       }
+  //     } else if (menuBarPosition === 'top') {
+  //       if (height > this._editorElementWrap.offsetHeight - 150) {
+  //         top = 150 / 2 - (height - (this._editorElementWrap.offsetHeight - 150)) / 2;
+  //       } else {
+  //         top = 150 / 2;
+  //       }
+  //     } else if (menuBarPosition === 'left') {
+  //       if (width > this._editorElementWrap.offsetWidth - 248) {
+  //         left = 248 / 2 - (width - (this._editorElementWrap.offsetWidth - 248)) / 2;
+  //       } else {
+  //         left = 248 / 2;
+  //       }
+  //     } else if (menuBarPosition === 'right') {
+  //       if (width > this._editorElementWrap.scrollWidth - 248) {
+  //         left = (width - this._editorElementWrap.scrollWidth) / 2;
+  //       } else {
+  //         left = (248 / 2) * -1;
+  //       }
+  //     }
+  //   }
+  //   editorElementStyle.top = `${top}px`;
+  //   editorElementStyle.left = `${left}px`;
+  // }
 }
 
 CustomEvents.mixin(Ui);

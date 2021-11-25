@@ -150,7 +150,8 @@ export default {
   'common.bisize.width': '251px',
   'common.bisize.height': '21px',
   'common.backgroundImage': 'none',
-  'common.backgroundColor': '#1e1e1e',
+  // 'common.backgroundColor': '#1e1e1e',
+  'common.backgroundColor': '#121212',
   'common.border': '0px',
 
   // header
@@ -173,18 +174,29 @@ export default {
   'downloadButton.fontSize': '12px',
 
   // main icons
-  'menu.normalIcon.color': '#8a8a8a',
-  'menu.activeIcon.color': '#555555',
-  'menu.disabledIcon.color': '#434343',
-  'menu.hoverIcon.color': '#e9e9e9',
-
-  // submenu icons
-  'submenu.normalIcon.color': '#8a8a8a',
-  'submenu.activeIcon.color': '#e9e9e9',
-
+  // 'menu.normalIcon.color': '#8a8a8a',
+  // 'menu.activeIcon.color': '#555555',
+  // 'menu.disabledIcon.color': '#434343',
+  // 'menu.hoverIcon.color': '#e9e9e9',
+  'menu.normalIcon.color': '#f0f0f0',
+  'menu.activeIcon.color': '#448aff',
+  'menu.disabledIcon.color': '#555555',
+  'menu.hoverIcon.color': '#448aff',
   'menu.iconSize.width': '24px',
   'menu.iconSize.height': '24px',
 
+  // editor menu icons
+  'editorMenu.normalIcon.color': '#f0f0f0',
+  'editorMenu.activeIcon.color': '#ffffff',
+  'editorMenu.disabledIcon.color': '#555555',
+  'editorMenu.hoverIcon.color': '#f0f0f0',
+  'editorMenu.iconSize.width': '24px',
+  'editorMenu.iconSize.height': '24px',
+
+  // submenu icons
+  'submenu.normalIcon.color': '#8a8a8a',
+  // 'submenu.activeIcon.color': '#e9e9e9',
+  'submenu.activeIcon.color': '#f0f0f0',
   'submenu.iconSize.width': '32px',
   'submenu.iconSize.height': '32px',
 

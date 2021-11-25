@@ -1,7 +1,7 @@
 import { extend, forEach, map } from 'tui-code-snippet';
 import style from '@/ui/template/style';
 // import standardTheme from '@/ui/theme/standard';
-import blackTheme from '@/ui/theme/blackTheme';
+import standard from './standard';
 import icon from '@svg/default.svg';
 import { styleLoad } from '@/util';
 
@@ -13,7 +13,7 @@ import { styleLoad } from '@/util';
  */
 class Theme {
   constructor(customTheme) {
-    this.styles = this._changeToObject(extend({}, blackTheme, customTheme));
+    this.styles = this._changeToObject(extend({}, standard, customTheme));
     styleLoad(this._styleMaker());
 
     this._loadDefaultSvgIcon();

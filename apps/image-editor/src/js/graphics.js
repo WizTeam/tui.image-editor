@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * @author NHN. FE Development Team <dl_javascript@nhn.com>
  * @fileoverview Graphics module
@@ -334,6 +335,9 @@ class Graphics {
    */
   getActiveObjectIdForRemove() {
     const activeObject = this.getActiveObject();
+    if (!activeObject) {
+      return null;
+    }
     const { type, left, top } = activeObject;
     const isSelection = type === 'activeSelection';
 
@@ -494,6 +498,15 @@ class Graphics {
   }
 
   /**
+   * Zoom in one step
+   */
+  zoomIn() {
+    const zoom = this.getComponent(components.ZOOM);
+
+    zoom.zoomIn();
+  }
+
+  /**
    * Zoom out one step
    */
   zoomOut() {
@@ -577,7 +590,7 @@ class Graphics {
    * Adjust canvas dimension with scaling image
    */
   adjustCanvasDimension() {
-    this.adjustCanvasDimensionBase(this.canvasImage.scale(1));
+    this.adjustCanvasDimensionBase(this.canvasImage);
   }
 
   adjustCanvasDimensionBase(canvasImage = null) {
@@ -628,11 +641,9 @@ class Graphics {
    */
   setImageProperties(setting, withRendering) {
     const { canvasImage } = this;
-
     if (!canvasImage) {
       return;
     }
-
     canvasImage.set(setting).setCoords();
     if (withRendering) {
       this._canvas.renderAll();

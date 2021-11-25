@@ -31,7 +31,7 @@ var blackTheme = {
   // 'menu.activeIcon.color': '#555555',
   'menu.activeIcon.color': '#ffffff',
   'menu.disabledIcon.color': '#434343',
-  'menu.hoverIcon.color': '#e9e9e9',
+  'menu.hoverIcon.color': '#f0f0f0',
   'menu.iconSize.width': '24px',
   'menu.iconSize.height': '24px',
 
@@ -39,13 +39,13 @@ var blackTheme = {
   'editorMenu.normalIcon.color': '#f0f0f0',
   'editorMenu.activeIcon.color': '#ffffff',
   'editorMenu.disabledIcon.color': '#434343',
-  'editorMenu.hoverIcon.color': '#e9e9e9',
+  'editorMenu.hoverIcon.color': '#f0f0f0',
   'editorMenu.iconSize.width': '24px',
   'editorMenu.iconSize.height': '24px',
 
   // submenu icons
   'submenu.normalIcon.color': '#8a8a8a',
-  'submenu.activeIcon.color': '#e9e9e9',
+  'submenu.activeIcon.color': '#f0f0f0',
   'submenu.iconSize.width': '32px',
   'submenu.iconSize.height': '32px',
 

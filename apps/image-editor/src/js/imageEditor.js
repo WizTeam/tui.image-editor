@@ -420,8 +420,9 @@ class ImageEditor {
    */
   removeActiveObject() {
     const activeObjectId = this._graphics.getActiveObjectIdForRemove();
-
-    this.removeObject(activeObjectId);
+    if (activeObjectId) {
+      this.removeObject(activeObjectId);
+    }
   }
 
   /**
@@ -586,7 +587,12 @@ class ImageEditor {
    * imageEditor.clearObjects();
    */
   clearObjects() {
-    return this.execute(commands.CLEAR_OBJECTS);
+    const objects = this._graphics.getObjects();
+    if (objects && objects.length > 0) {
+      return this.execute(commands.CLEAR_OBJECTS);
+    }
+
+    return null;
   }
 
   /**
