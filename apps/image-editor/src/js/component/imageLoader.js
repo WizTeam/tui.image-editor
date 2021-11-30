@@ -46,6 +46,7 @@ class ImageLoader extends Component {
       promise = this._setBackgroundImage(img).then((oImage) => {
         this.setCanvasImage(imageName, oImage);
         this.adjustCanvasDimension();
+        this.initImageSize();
 
         return oImage;
       });

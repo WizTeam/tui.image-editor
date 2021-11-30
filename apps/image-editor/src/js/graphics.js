@@ -1,3 +1,4 @@
+/* eslint-disable guard-for-in */
 /* eslint-disable no-console */
 /**
  * @author NHN. FE Development Team <dl_javascript@nhn.com>
@@ -159,6 +160,22 @@ class Graphics {
     this._createComponents();
     this._attachCanvasEvents();
     this._attachZoomEvents();
+  }
+
+  /**
+   * Get css max width
+   * @returns {Number}
+   */
+  getCssMaxWidth() {
+    return this.cssMaxWidth;
+  }
+
+  /**
+   * Get css max height
+   * @returns {Number}
+   */
+  getCssMaxHeight() {
+    return this.cssMaxHeight;
   }
 
   /**
@@ -597,7 +614,6 @@ class Graphics {
     if (!canvasImage) {
       canvasImage = this.canvasImage;
     }
-
     const { width, height } = canvasImage.getBoundingRect();
     const maxDimension = this._calcMaxDimension(width, height);
 
@@ -609,10 +625,20 @@ class Graphics {
     });
 
     this.setCanvasBackstoreDimension({
-      width,
-      height,
+      width: Math.min(width, maxDimension.width),
+      height: Math.min(height, maxDimension.height),
     });
+
     this._canvas.centerObject(canvasImage);
+  }
+
+  initImageSize() {
+    const canvas = this.getCanvas();
+    const width = canvas.getWidth();
+    const height = canvas.getHeight();
+
+    const zoom = this.getComponent(components.ZOOM);
+    zoom.initImageSize(width, height);
   }
 
   /**

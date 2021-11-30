@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable complexity */
 /* eslint-disable no-console */
 /**
@@ -76,16 +77,16 @@ class Zoom extends Component {
     this._centerPoints = [];
 
     /**
-     * Center point of zooms
-     * @type {Array.<{x: number, y: number}>}
-     */
-    this._centerPoint = { x: 0, y: 0 };
-
-    /**
      * Zoom level (default: 100%(1.0), max: 400%(4.0))
      * @type {number}
      */
     this.zoomLevel = DEFAULT_ZOOM_LEVEL;
+
+    /**
+     * image Zoom level (default: 100%(1.0), max: 400%(4.0))
+     * @type {number}
+     */
+    this.imageInitSize = { width: 0, height: 0 };
 
     /**
      * Zoom mode ('normal', 'zoom', 'hand')
@@ -137,6 +138,10 @@ class Zoom extends Component {
     this.graphics.on(ADD_TEXT, this._startTextEditingHandler.bind(this));
     this.graphics.on(TEXT_EDITING, this._startTextEditingHandler.bind(this));
     this.graphics.on(OBJECT_MODIFIED, this._stopTextEditingHandler.bind(this));
+  }
+
+  initImageSize(width, height) {
+    this.imageInitSize = { width, height };
   }
 
   /**
@@ -473,18 +478,66 @@ class Zoom extends Component {
     }
 
     const canvas = this.getCanvas();
-    const newZoomLevel = this.zoomLevel + 0.1;
-    const { x: centerX, y: centerY } = this._centerPoint;
+    const canvasImage = this.getCanvasImage();
+    const newZoomLevel = Math.round((this.zoomLevel + 0.1) * 10) / 10;
+    const { width: originWidth, height: originHeight } = this.imageInitSize;
 
-    if (centerX === 0 && centerY === 0) {
-      const canvasImage = this.getCanvasImage();
-      const { left, top, width, height } = canvasImage.getBoundingRect();
-      this._centerPoint = {
-        x: left + width / 2,
-        y: top + height / 2,
-      };
+    const cssMaxWidth = this.getCssMaxWidth();
+    const cssMaxHeight = this.getCssMaxHeight();
+
+    const newWidth = originWidth * newZoomLevel;
+    const newHeight = originHeight * newZoomLevel;
+
+    if (newWidth <= cssMaxWidth && newHeight <= cssMaxHeight) {
+      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      canvasImage.scaleToWidth(newWidth);
+      canvasImage.scaleToHeight(newHeight);
+      canvasImage.set({ left: 0, top: 0 });
+
+      this.adjustCanvasDimension(false);
+
+      canvas.forEachObject((obj) => {
+        const { left, top, scaleX, scaleY } = obj;
+
+        obj.set({
+          left: (left / scaleX) * (scaleX + 0.1),
+          top: (top / scaleY) * (scaleY + 0.1),
+          scaleX: scaleX + 0.1,
+          scaleY: scaleY + 0.1,
+        });
+        obj.setCoords();
+      });
+      canvas.renderAll();
+    } else {
+      const { left, top, width, height } = canvasImage;
+      const canvasWidth = canvas.getWidth();
+      const canvasHeight = canvas.getHeight();
+      console.log(`zoomIn canvas: ${canvasWidth}, ${canvasHeight}`);
+      console.log(`zoomIn image: ${left}, ${top}, ${width}, ${height}`);
+
+      const { left: x, top: y } = canvas.getCenter();
+      // if (left > 0) {
+      //   x = 0;
+      // } else if (left + width < canvasWidth) {
+      //   x = left + width;
+      // }
+
+      // if (top > 0) {
+      //   y = 0;
+      // } else if (top + height < canvasHeight) {
+      //   y = top + height;
+      // }
+
+      const centerPoints = this._centerPoints;
+      centerPoints.push({
+        x,
+        y,
+        prevZoomLevel: this.zoomLevel,
+        zoomLevel: newZoomLevel,
+      });
+      canvas.zoomToPoint({ x, y }, newZoomLevel);
     }
-    canvas.zoomToPoint({ x: this._centerPoint.x, y: this._centerPoint.y }, newZoomLevel);
+
     this.zoomLevel = newZoomLevel;
     this._fireZoomChanged(canvas, this.zoomLevel);
   }
@@ -518,17 +571,67 @@ class Zoom extends Component {
     }
 
     const canvas = this.getCanvas();
-    const newZoomLevel = this.zoomLevel - 0.1;
-    const { x: centerX, y: centerY } = this._centerPoint;
-    if (centerX === 0 && centerY === 0) {
-      const canvasImage = this.getCanvasImage();
-      const { left, top, width, height } = canvasImage.getBoundingRect();
-      this._centerPoint = {
-        x: left + width / 2,
-        y: top + height / 2,
-      };
+    const canvasImage = this.getCanvasImage();
+    const newZoomLevel = Math.round((this.zoomLevel - 0.1) * 10) / 10;
+
+    const { width: imageWidth, height: imageHeight } = this.imageInitSize;
+    const cssMaxWidth = this.getCssMaxWidth();
+    const cssMaxHeight = this.getCssMaxHeight();
+
+    const newWidth = imageWidth * newZoomLevel;
+    const newHeight = imageHeight * newZoomLevel;
+
+    if (newWidth < cssMaxWidth && newHeight < cssMaxHeight) {
+      canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+      canvasImage.scaleToWidth(newWidth);
+      canvasImage.scaleToHeight(newHeight);
+
+      this.adjustCanvasDimension(false);
+
+      canvas.forEachObject((obj) => {
+        const { left, top, scaleX, scaleY } = obj;
+
+        obj.set({
+          left: (left / scaleX) * (scaleX - 0.1),
+          top: (top / scaleY) * (scaleY - 0.1),
+          scaleX: scaleX - 0.1,
+          scaleY: scaleY - 0.1,
+        });
+        obj.setCoords();
+      });
+      canvas.renderAll();
+    } else {
+      const { left, top, width, height } = canvasImage;
+      const canvasWidth = canvas.getWidth();
+      const canvasHeight = canvas.getHeight();
+
+      console.log(`zoomOut image in screen: ${canvasImage.isPartiallyOnScreen()}`);
+
+      console.log(`zoomOut canvas: ${canvasWidth}, ${canvasHeight}`);
+      console.log(`zoomOut image: ${left}, ${top}, ${width}, ${height}`);
+
+      const { left: x, top: y } = canvas.getCenter();
+      // if (left > 0) {
+      //   x = 0;
+      // } else if (left + width < canvasWidth) {
+      //   x = left + width;
+      // }
+
+      // if (top > 0) {
+      //   y = 0;
+      // } else if (top + height < canvasHeight) {
+      //   y = top + height;
+      // }
+
+      const centerPoints = this._centerPoints;
+      centerPoints.push({
+        x,
+        y,
+        prevZoomLevel: this.zoomLevel,
+        zoomLevel: newZoomLevel,
+      });
+      canvas.zoomToPoint({ x, y }, newZoomLevel);
     }
-    canvas.zoomToPoint({ x: this._centerPoint.x, y: this._centerPoint.y }, newZoomLevel);
 
     this.zoomLevel = newZoomLevel;
     this._fireZoomChanged(canvas, this.zoomLevel);
@@ -572,36 +675,51 @@ class Zoom extends Component {
    * @private
    */
   _movePointOfZoom({ x: deltaX, y: deltaY }) {
-    // const centerPoints = this._centerPoints;
+    const centerPoints = this._centerPoints;
 
     // if (!centerPoints.length) {
     //   return;
     // }
 
-    // const canvas = this.getCanvas();
-    // const { zoomLevel } = this;
-
-    // const point = centerPoints.pop();
-    // const { x: originX, y: originY, prevZoomLevel } = point;
-    // const x = originX - deltaX;
-    // const y = originY - deltaY;
-
-    // canvas.zoomToPoint({ x: originX, y: originY }, prevZoomLevel);
-    // canvas.zoomToPoint({ x, y }, zoomLevel);
-    // centerPoints.push({ x, y, prevZoomLevel, zoomLevel });
-
-    // this._fireZoomChanged(canvas, zoomLevel);
-
     const canvas = this.getCanvas();
     const { zoomLevel } = this;
 
-    const { x: originX, y: originY } = this._centerPoint;
-    const x = originX - deltaX;
-    const y = originY - deltaY;
+    const canvasImage = this.getCanvasImage();
+    const { left, top, width, height } = canvasImage.getBoundingRect();
+    const canvasWidth = canvas.getWidth();
+    const canvasHeight = canvas.getHeight();
 
-    this._centerPoint = { x, y };
-    canvas.zoomToPoint({ x: originX, y: originY }, zoomLevel - 0.1);
-    canvas.zoomToPoint({ x, y }, zoomLevel);
+    const point = centerPoints.pop();
+    const { x: originX, y: originY, prevZoomLevel } = point;
+    let x = left + width / 2;
+    let y = top + height / 2;
+
+    let canMove = true;
+    if (left > 0 && deltaX > 0) {
+      x = 0;
+      canMove = false;
+    }
+    if (left + width < canvasWidth && deltaX < 0) {
+      x = left + width;
+      canMove = false;
+    }
+    if (top > 0 && deltaY > 0) {
+      y = 0;
+      canMove = false;
+    }
+    if (top + height < canvasHeight && deltaY < 0) {
+      y = top + height;
+      canMove = false;
+    }
+
+    if (canMove) {
+      x = originX - deltaX;
+      y = originY - deltaY;
+      canvas.zoomToPoint({ x: originX, y: originY }, prevZoomLevel);
+      canvas.zoomToPoint({ x, y }, zoomLevel);
+    }
+
+    centerPoints.push({ x, y, prevZoomLevel, zoomLevel });
     this._fireZoomChanged(canvas, zoomLevel);
   }
 
@@ -616,8 +734,13 @@ class Zoom extends Component {
     }
 
     const canvas = this.getCanvas();
+    const canvasImage = this.getCanvasImage();
 
-    if (this.zoomLevel <= DEFAULT_ZOOM_LEVEL) {
+    const canvasWidth = canvas.getWidth();
+    const canvasHeight = canvas.getHeight();
+    const { width, height } = canvasImage.getBoundingRect();
+
+    if (width <= canvasWidth || height <= canvasHeight) {
       return;
     }
 
@@ -640,6 +763,7 @@ class Zoom extends Component {
   _onMouseMoveWithHandMode({ e }) {
     const canvas = this.getCanvas();
     const { x, y } = canvas.getPointer(e);
+
     const deltaX = x - this._startHandPoint.x;
     const deltaY = y - this._startHandPoint.y;
 
