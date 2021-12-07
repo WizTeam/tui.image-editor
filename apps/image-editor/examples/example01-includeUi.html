@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <title>0. Design</title>
-    <link
+    <!-- <link
       type="text/css"
       href="https://uicdn.toast.com/tui-color-picker/v2.2.6/tui-color-picker.css"
       rel="stylesheet"
-    />
+    /> -->
     <link type="text/css" href="../dist/tui-image-editor.css" rel="stylesheet" />
     <style>
       @import url(http://fonts.googleapis.com/css?family=Noto+Sans);
@@ -44,11 +44,11 @@
       var imageEditor = new tui.ImageEditor('#tui-image-editor-container', {
         includeUI: {
           loadImage: {
-            path: 'img/sampleImage2.png',
+            path: 'img/sampleImage.jpeg',
             name: 'SampleImage',
           },
           // theme: blackTheme, // or whiteTheme
-          initMenu: 'filter',
+          // initMenu: 'filter',
           // menuBarPosition: 'bottom',
         },
         // cssMaxWidth: 700,
@@ -57,6 +57,9 @@
       });
       window.onresize = function () {
         imageEditor.ui.resizeEditor();
+      };
+      window.onload = function () {
+        imageEditor._graphics.setCanvasSize();
       };
     </script>
   </body>

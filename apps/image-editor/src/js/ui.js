@@ -199,12 +199,12 @@ class Ui {
       this._setUiSize(uiSize);
     }
 
-    const { width, height } = this._getCanvasMaxDimension();
+    // const { width, height } = this._getCanvasMaxDimension();
     const editorElementStyle = this._editorElement.style;
     const { menuBarPosition } = this.options;
 
-    editorElementStyle.height = `${height}px`;
-    editorElementStyle.width = `${width}px`;
+    editorElementStyle.height = '100%';
+    editorElementStyle.width = '100%';
 
     // this._setEditorPosition(menuBarPosition);
     this._setEditorPosition();
@@ -224,6 +224,8 @@ class Ui {
     } else {
       selectElementClassList.remove('tui-image-editor-top-optimization');
     }
+
+    this.fire(eventNames.EDITOR_RESIZED);
   }
 
   /**
@@ -830,7 +832,7 @@ class Ui {
       this[this.submenu].changeStartMode();
     }
 
-    this.resizeEditor();
+    // this.resizeEditor();
   }
 
   /**

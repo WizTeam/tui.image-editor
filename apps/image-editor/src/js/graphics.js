@@ -63,6 +63,7 @@ const backstoreOnly = {
  */
 class Graphics {
   constructor(element, { cssMaxWidth, cssMaxHeight } = {}) {
+    this.editorElement = element;
     /**
      * Fabric image instance
      * @type {fabric.Image}
@@ -160,6 +161,14 @@ class Graphics {
     this._createComponents();
     this._attachCanvasEvents();
     this._attachZoomEvents();
+  }
+
+  setCanvasSize() {
+    this.cssMaxWidth = this.editorElement.offsetWidth;
+    this.cssMaxHeight = this.editorElement.offsetHeight;
+    this.adjustCanvasDimension();
+
+    this.initCanvasMaxSize();
   }
 
   /**
@@ -614,7 +623,10 @@ class Graphics {
     if (!canvasImage) {
       canvasImage = this.canvasImage;
     }
-    const { width, height } = canvasImage.getBoundingRect();
+    const { width: originalWidth, height: originalHeight } = canvasImage.getOriginalSize();
+    const { scaleX, scaleY } = canvasImage;
+    const width = originalWidth * scaleX;
+    const height = originalHeight * scaleY;
     const maxDimension = this._calcMaxDimension(width, height);
 
     this.setCanvasCssDimension({
@@ -625,20 +637,20 @@ class Graphics {
     });
 
     this.setCanvasBackstoreDimension({
-      width: Math.min(width, maxDimension.width),
-      height: Math.min(height, maxDimension.height),
+      width,
+      height,
     });
 
     this._canvas.centerObject(canvasImage);
   }
 
-  initImageSize() {
+  initCanvasMaxSize() {
     const canvas = this.getCanvas();
     const width = canvas.getWidth();
     const height = canvas.getHeight();
 
     const zoom = this.getComponent(components.ZOOM);
-    zoom.initImageSize(width, height);
+    zoom.initCanvasMaxSize(width, height);
   }
 
   /**
@@ -1087,7 +1099,7 @@ class Graphics {
     let cssMaxWidth = Math.min(width, this.cssMaxWidth);
     let cssMaxHeight = Math.min(height, this.cssMaxHeight);
 
-    if (wScaleFactor < 1 && wScaleFactor < hScaleFactor) {
+    if (wScaleFactor < 1 && wScaleFactor <= hScaleFactor) {
       cssMaxWidth = width * wScaleFactor;
       cssMaxHeight = height * wScaleFactor;
     } else if (hScaleFactor < 1 && hScaleFactor < wScaleFactor) {

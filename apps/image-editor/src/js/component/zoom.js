@@ -83,10 +83,10 @@ class Zoom extends Component {
     this.zoomLevel = DEFAULT_ZOOM_LEVEL;
 
     /**
-     * image Zoom level (default: 100%(1.0), max: 400%(4.0))
+     * image max scale level
      * @type {number}
      */
-    this.imageInitSize = { width: 0, height: 0 };
+    this.maxScaleLevel = 1.0;
 
     /**
      * Zoom mode ('normal', 'zoom', 'hand')
@@ -140,8 +140,19 @@ class Zoom extends Component {
     this.graphics.on(OBJECT_MODIFIED, this._stopTextEditingHandler.bind(this));
   }
 
-  initImageSize(width, height) {
-    this.imageInitSize = { width, height };
+  initCanvasMaxSize() {
+    const cssMaxWidth = this.getCssMaxWidth();
+    const cssMaxHeight = this.getCssMaxHeight();
+
+    const canvasImage = this.getCanvasImage();
+    const { width, height } = canvasImage.getOriginalSize();
+    if (width >= cssMaxWidth || height >= cssMaxHeight) {
+      this.maxScaleLevel = 1.0;
+    } else {
+      const scaleX = Math.round((cssMaxWidth / width) * 100) / 100;
+      const scaleY = Math.round((cssMaxHeight / height) * 100) / 100;
+      this.maxScaleLevel = Math.min(scaleX, scaleY);
+    }
   }
 
   /**
@@ -479,63 +490,52 @@ class Zoom extends Component {
 
     const canvas = this.getCanvas();
     const canvasImage = this.getCanvasImage();
-    const newZoomLevel = Math.round((this.zoomLevel + 0.1) * 10) / 10;
-    const { width: originWidth, height: originHeight } = this.imageInitSize;
+    const { width: originWidth, height: originHeight } = canvasImage.getOriginalSize();
 
-    const cssMaxWidth = this.getCssMaxWidth();
-    const cssMaxHeight = this.getCssMaxHeight();
+    let newZoomLevel = Math.round((this.zoomLevel + 0.1) * 10) / 10;
+    if (this.zoomLevel < this.maxScaleLevel && this.maxScaleLevel < newZoomLevel) {
+      newZoomLevel = this.maxScaleLevel;
+    }
 
-    const newWidth = originWidth * newZoomLevel;
-    const newHeight = originHeight * newZoomLevel;
+    if (newZoomLevel <= this.maxScaleLevel) {
+      const newWidth = originWidth * newZoomLevel;
+      const newHeight = originHeight * newZoomLevel;
 
-    if (newWidth <= cssMaxWidth && newHeight <= cssMaxHeight) {
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
       canvasImage.scaleToWidth(newWidth);
       canvasImage.scaleToHeight(newHeight);
-      canvasImage.set({ left: 0, top: 0 });
 
-      this.adjustCanvasDimension(false);
+      this.adjustCanvasDimension();
 
       canvas.forEachObject((obj) => {
         const { left, top, scaleX, scaleY } = obj;
 
+        let newScaleX = (scaleX * newZoomLevel) / this.zoomLevel;
+        let newScaleY = (scaleY * newZoomLevel) / this.zoomLevel;
+        newScaleX = Math.round(newScaleX * 10) / 10;
+        newScaleY = Math.round(newScaleY * 10) / 10;
+
         obj.set({
-          left: (left / scaleX) * (scaleX + 0.1),
-          top: (top / scaleY) * (scaleY + 0.1),
-          scaleX: scaleX + 0.1,
-          scaleY: scaleY + 0.1,
+          scaleX: newScaleX,
+          scaleY: newScaleY,
+          left: Math.round((left / scaleX) * newScaleX * 10) / 10,
+          top: Math.round((top / scaleY) * newScaleY * 10) / 10,
         });
         obj.setCoords();
       });
       canvas.renderAll();
     } else {
-      const { left, top, width, height } = canvasImage;
-      const canvasWidth = canvas.getWidth();
-      const canvasHeight = canvas.getHeight();
-      console.log(`zoomIn canvas: ${canvasWidth}, ${canvasHeight}`);
-      console.log(`zoomIn image: ${left}, ${top}, ${width}, ${height}`);
-
+      const preZoom = this.zoomLevel - this.maxScaleLevel + 1;
+      const zoom = newZoomLevel - this.maxScaleLevel + 1;
       const { left: x, top: y } = canvas.getCenter();
-      // if (left > 0) {
-      //   x = 0;
-      // } else if (left + width < canvasWidth) {
-      //   x = left + width;
-      // }
-
-      // if (top > 0) {
-      //   y = 0;
-      // } else if (top + height < canvasHeight) {
-      //   y = top + height;
-      // }
-
       const centerPoints = this._centerPoints;
       centerPoints.push({
         x,
         y,
-        prevZoomLevel: this.zoomLevel,
-        zoomLevel: newZoomLevel,
+        prevZoomLevel: preZoom,
+        zoomLevel: zoom,
       });
-      canvas.zoomToPoint({ x, y }, newZoomLevel);
+      canvas.zoomToPoint({ x, y }, zoom);
     }
 
     this.zoomLevel = newZoomLevel;
@@ -572,65 +572,51 @@ class Zoom extends Component {
 
     const canvas = this.getCanvas();
     const canvasImage = this.getCanvasImage();
-    const newZoomLevel = Math.round((this.zoomLevel - 0.1) * 10) / 10;
+    const { width: imageWidth, height: imageHeight } = canvasImage.getOriginalSize();
 
-    const { width: imageWidth, height: imageHeight } = this.imageInitSize;
-    const cssMaxWidth = this.getCssMaxWidth();
-    const cssMaxHeight = this.getCssMaxHeight();
+    let newZoomLevel = Math.round((this.zoomLevel - 0.1) * 10) / 10;
+    if (newZoomLevel < this.maxScaleLevel && this.maxScaleLevel < this.zoomLevel) {
+      newZoomLevel = this.maxScaleLevel;
+    }
 
-    const newWidth = imageWidth * newZoomLevel;
-    const newHeight = imageHeight * newZoomLevel;
+    if (newZoomLevel <= this.maxScaleLevel) {
+      const newWidth = imageWidth * newZoomLevel;
+      const newHeight = imageHeight * newZoomLevel;
 
-    if (newWidth < cssMaxWidth && newHeight < cssMaxHeight) {
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
       canvasImage.scaleToWidth(newWidth);
       canvasImage.scaleToHeight(newHeight);
 
-      this.adjustCanvasDimension(false);
+      this.adjustCanvasDimension();
 
       canvas.forEachObject((obj) => {
         const { left, top, scaleX, scaleY } = obj;
+        let newScaleX = (scaleX * newZoomLevel) / this.zoomLevel;
+        let newScaleY = (scaleY * newZoomLevel) / this.zoomLevel;
+        newScaleX = Math.round(newScaleX * 10) / 10;
+        newScaleY = Math.round(newScaleY * 10) / 10;
 
         obj.set({
-          left: (left / scaleX) * (scaleX - 0.1),
-          top: (top / scaleY) * (scaleY - 0.1),
-          scaleX: scaleX - 0.1,
-          scaleY: scaleY - 0.1,
+          scaleX: newScaleX,
+          scaleY: newScaleY,
+          left: Math.round((left / scaleX) * newScaleX * 10) / 10,
+          top: Math.round((top / scaleY) * newScaleY * 10) / 10,
         });
         obj.setCoords();
       });
       canvas.renderAll();
     } else {
-      const { left, top, width, height } = canvasImage;
-      const canvasWidth = canvas.getWidth();
-      const canvasHeight = canvas.getHeight();
-
-      console.log(`zoomOut image in screen: ${canvasImage.isPartiallyOnScreen()}`);
-
-      console.log(`zoomOut canvas: ${canvasWidth}, ${canvasHeight}`);
-      console.log(`zoomOut image: ${left}, ${top}, ${width}, ${height}`);
-
+      const preZoom = this.zoomLevel - this.maxScaleLevel + 1;
+      const zoom = newZoomLevel - this.maxScaleLevel + 1;
       const { left: x, top: y } = canvas.getCenter();
-      // if (left > 0) {
-      //   x = 0;
-      // } else if (left + width < canvasWidth) {
-      //   x = left + width;
-      // }
-
-      // if (top > 0) {
-      //   y = 0;
-      // } else if (top + height < canvasHeight) {
-      //   y = top + height;
-      // }
-
       const centerPoints = this._centerPoints;
       centerPoints.push({
         x,
         y,
-        prevZoomLevel: this.zoomLevel,
-        zoomLevel: newZoomLevel,
+        prevZoomLevel: preZoom,
+        zoomLevel: zoom,
       });
-      canvas.zoomToPoint({ x, y }, newZoomLevel);
+      canvas.zoomToPoint({ x, y }, zoom);
     }
 
     this.zoomLevel = newZoomLevel;
@@ -642,8 +628,12 @@ class Zoom extends Component {
    */
   resetZoom() {
     const canvas = this.getCanvas();
-
+    const canvasImage = this.getCanvasImage();
+    const { width, height } = canvasImage.getOriginalSize();
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
+    canvasImage.scaleToWidth(width);
+    canvasImage.scaleToWidth(height);
+    this.adjustCanvasDimension();
 
     this.zoomLevel = DEFAULT_ZOOM_LEVEL;
     this._centerPoints = [];

@@ -175,7 +175,7 @@ export const eventNames = {
   INPUT_BOX_EDITING_STOPPED: 'inputBoxEditingStopped',
   FOCUS: 'focus',
   BLUR: 'blur',
-  IMAGE_RESIZED: 'imageResized',
+  EDITOR_RESIZED: 'imageResized',
 };
 
 /**

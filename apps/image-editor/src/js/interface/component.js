@@ -120,12 +120,12 @@ class Component {
   /**
    * Adjust canvas dimension with scaling image
    */
-  adjustCanvasDimension(selfAdaption = true) {
-    this.graphics.adjustCanvasDimension(selfAdaption);
+  adjustCanvasDimension() {
+    this.graphics.adjustCanvasDimension();
   }
 
-  adjustCanvasDimensionBase(canvasImage = null, selfAdaption = true) {
-    this.graphics.adjustCanvasDimensionBase(canvasImage, selfAdaption);
+  adjustCanvasDimensionBase(canvasImage = null) {
+    this.graphics.adjustCanvasDimensionBase(canvasImage);
   }
 
   /**
@@ -144,8 +144,8 @@ class Component {
     return this.graphics.getCssMaxHeight();
   }
 
-  initImageSize() {
-    return this.graphics.initImageSize();
+  initCanvasMaxSize() {
+    return this.graphics.initCanvasMaxSize();
   }
 }
 

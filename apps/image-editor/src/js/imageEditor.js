@@ -246,23 +246,27 @@ class ImageEditor {
     if (this.ui) {
       this.ui.initCanvas();
       this.setReAction();
-      this._attachColorPickerInputBoxEvents();
+      this._attachUIEvents();
     }
     fabric.enableGLFiltering = false;
   }
 
-  _attachColorPickerInputBoxEvents() {
+  _attachUIEvents() {
     this.ui.on(events.INPUT_BOX_EDITING_STARTED, () => {
       this.isColorPickerInputBoxEditing = true;
     });
     this.ui.on(events.INPUT_BOX_EDITING_STOPPED, () => {
       this.isColorPickerInputBoxEditing = false;
     });
+    this.ui.on(events.EDITOR_RESIZED, () => {
+      this._graphics.setCanvasSize();
+    });
   }
 
-  _detachColorPickerInputBoxEvents() {
+  _detachUIEvents() {
     this.ui.off(events.INPUT_BOX_EDITING_STARTED);
     this.ui.off(events.INPUT_BOX_EDITING_STOPPED);
+    this.ui.off(events.EDITOR_RESIZED);
   }
 
   /**
@@ -1599,7 +1603,7 @@ class ImageEditor {
     this._graphics = null;
 
     if (this.ui) {
-      this._detachColorPickerInputBoxEvents();
+      this._detachUIEvents();
       this.ui.destroy();
     }
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { extend } from 'tui-code-snippet';
 import Imagetracer from '@/helper/imagetracer';
 import { isSupportFileApi, base64ToBlob, toInteger, isEmptyCropzone, includes } from '@/util';
@@ -693,9 +694,11 @@ export default {
             this._changeActivateMode(TEXT);
             break;
           case drawingMenuNames.CROP:
+            this._graphics.resetZoom();
             this.startDrawingMode(CROPPER);
             break;
           case drawingMenuNames.SHAPE:
+            this._graphics.resetZoom();
             this._changeActivateMode(SHAPE);
             this.setDrawingShape(this.ui.shape.type, this.ui.shape.options);
             break;
@@ -703,6 +706,7 @@ export default {
             this.startDrawingMode(ZOOM);
             break;
           case drawingMenuNames.RESIZE:
+            this._graphics.resetZoom();
             this.startDrawingMode(RESIZE);
             break;
           default:
